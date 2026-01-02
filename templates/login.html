@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="uz">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Style Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            /* Orqa fonga qora rasm qo'yish uchun */
+            background: #000 url('https://wallpapercave.com/wp/wp7037892.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glass-box {
+            width: 90%;
+            max-width: 400px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 35px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            color: white;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 26px;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 18px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Placeholder rangi */
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 18px;
+            background: #fff;
+            color: #000;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 25px;
+            font-size: 13px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        /* Asosiy xabarnoma dizayni */
+        .notification-box {
+            width: 320px;
+            height: 60px;
+            position: fixed;
+            top: -100px;
+            /* Boshlang'ich holat */
+            left: 50%;
+            transform: translateX(-50%);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+
+            /* Apple Glassmorphism effekti */
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+            /* Silliq harakat */
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: -0.3px;
+        }
+
+        /* Faollashganda (tepadan tushganda) */
+        @keyframes shake {
+            0% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            25% {
+                transform: translateX(-50%) translateY(0) translateX(-4px);
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(0) translateX(4px);
+            }
+
+            75% {
+                transform: translateX(-50%) translateY(0) translateX(-4px);
+            }
+
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .notification-box.show {
+            top: 30px;
+            animation: shake 0.4s ease;
+        }
+
+
+        /* Muvaffaqiyatli holat - yashilroq blur */
+        .success-bg {
+            background: rgba(40, 200, 69, 0.15);
+            box-shadow: 0 10px 30px rgba(40, 200, 69, 0.1);
+        }
+
+        /* Xato holati - qizilroq blur */
+        .error-bg {
+            background: rgba(255, 69, 58, 0.15);
+            box-shadow: 0 10px 30px rgba(255, 69, 58, 0.1);
+        }
+
+        /* Icon va tekst uchun konteyner */
+        .content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    {% if login_success %}
+    <div id="msg-box" class="notification-box success-bg">
+        <div class="content">✅ Xush kelibsiz!</div>
+    </div>
+    <audio id="success-sound" src="{% static 'sounds/ios_17_notification.wav' %}" preload="auto"></audio>
+    {% endif %}
+
+    {% if login_error %}
+    <div id="msg-box" class="notification-box error-bg">
+        <div class="content">❌ Username yoki parol xato!</div>
+    </div>
+    <audio id="error-sound" src="{% static 'sounds/ios_error.wav' %}" preload="auto"></audio>
+    {% endif %}
+
+
+    <div class="glass-box">
+        <h2>Xush kelibsiz</h2>
+        <p>Davom etish uchun tizimga kiring</p>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" name="username" placeholder="Foydalanuvchi nomi" required>
+            </div>
+
+            <div class="input-group">
+                <input type="password" name="password" placeholder="Parol" required>
+            </div>
+
+            <button type="submit">Kirish</button>
+        </form>
+
+        <div class="footer-links">
+            <a href="#">Parolni unutdingizmi?</a>
+            <a href="{% url 'register' %}">Register</a>
+        </div>
+    </div>
+    <audio id="success-sound" src="{% static 'sounds/ios_17_notification.wav' %}" preload="auto"></audio>
+    <script>
+        window.onload = function () {
+            const msgBox = document.getElementById("msg-box");
+            if (!msgBox) return;
+
+            setTimeout(() => msgBox.classList.add("show"), 100);
+
+            if (msgBox.classList.contains("success-bg")) {
+                document.getElementById("success-sound")?.play().catch(() => console.log("sound blocked"));
+                // 2 soniyadan keyin main_page ga o'tish
+                setTimeout(() => {
+                    window.location.href = "{% url 'main_page' %}";
+                }, 2000);
+            }
+
+            if (msgBox.classList.contains("error-bg")) {
+                document.getElementById("error-sound")?.play().catch(() => console.log("sound blocked"));
+            }
+
+            setTimeout(() => msgBox.classList.remove("show"), 4000);
+        };
+    </script>
+
+
+
+
+</body>
+
+</html>

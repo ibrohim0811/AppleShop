@@ -1,0 +1,680 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main page</title>
+    <link rel="icon" type="image/png" href="https://cdn.mos.cms.futurecdn.net/SoXdEkeuwbHJf5NPiPmecS.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #1C1C1E;
+            padding: 20px;
+        }
+
+        /* --- SWIPER --- */
+        .swiper {
+            width: 1500px;
+            max-width: 95vw;
+            height: 400px;
+            border-radius: 20px;
+        }
+
+        .swiper-slide {
+            opacity: 0.5;
+            transform: scale(0.7);
+            filter: brightness(0.4);
+            transition: 0.5s ease;
+        }
+
+        .swiper-slide-active {
+            opacity: 1 !important;
+            transform: scale(1) !important;
+            filter: brightness(1) !important;
+        }
+
+        .swiper-slide-prev,
+        .swiper-slide-next {
+            opacity: 0.7;
+            transform: scale(0.85);
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        /* --- BOXES (product) --- */
+
+        .box-father {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        /* Card */
+        .box {
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            border-radius: 22px;
+            padding: 18px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .box:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Image */
+        .box img {
+            width: 100%;
+            max-height: 250px;
+            object-fit: cover;
+            /* rasm tabiiy chiqadi */
+            border-radius: 14px;
+            margin-bottom: 14px;
+            background: none;
+            padding: 0;
+        }
+
+        /* Text */
+        .name {
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .desc {
+            color: #b3b3b3;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 10px 0;
+        }
+
+        .count {
+            color: #32d74b;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        /* Price */
+        .price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .old-price {
+            color: #8e8e93;
+            text-decoration: line-through;
+            font-size: 0.95rem;
+        }
+
+        .sale-price {
+            color: #ff453a;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .box h3.price {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        /* Button */
+        .cart-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, #0A84FF, #5AC8FA);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .cart-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* .ve:hover {
+            width: 250px;
+            height: 50px;
+            border-radius: 17px;
+            background-color: aqua;
+            color: black;
+            transition: 1s;
+        } */
+
+        .endof {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btnf {
+            display: flex;
+            justify-content: center;
+        }
+
+        @media (max-width: 1024px) {
+            .swiper {
+                height: 350px;
+            }
+
+            .box {
+                width: 220px;
+            }
+
+            .price {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .swiper {
+                height: 300px;
+            }
+
+            .box {
+                width: 45%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .swiper {
+                height: 250px;
+            }
+
+            .box {
+                width: 90%;
+            }
+
+            .name {
+                font-size: 16px;
+            }
+
+            .price {
+                font-size: 16px;
+            }
+
+            .cart-btn {
+                width: 90%;
+                font-size: 14px;
+            }
+
+            .desc {
+                font-size: 13px;
+                height: auto;
+            }
+        }
+
+        .price-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .end {
+            color: white;
+            margin: 0 auto;
+        }
+
+        .badge {
+            position: absolute;
+            top: 14px;
+            padding: 6px 14px;
+            border-radius: 22px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        }
+
+        /* NEW */
+        .badge-new {
+            margin-top: -12px;
+            margin-left: -10px;
+            left: 14px;
+            background: linear-gradient(135deg, #32D74B, #28CD41);
+            color: #0b2e13;
+        }
+
+        /* SALE */
+        .badge-sale {
+            right: 12px;
+            top: 6px;
+            /* tepaga ko‘tarildi */
+            background: linear-gradient(135deg, #FF453A, #FF6B5A);
+            color: #fff;
+            transform: rotate(8deg);
+            animation: glowPulse 1.2s infinite ease-in-out;
+            /* tezroq va jonli */
+        }
+
+        @keyframes glowPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 8px 24px rgba(255, 69, 58, 0.35);
+                transform: rotate(8deg) scale(1);
+            }
+
+            50% {
+                box-shadow: 0 16px 40px rgba(255, 69, 58, 0.7);
+                transform: rotate(8deg) scale(1.1);
+            }
+        }
+
+        .price {
+            color: lightgreen;
+        }
+
+        .prices {
+            display: flex;
+            gap: 20px;
+        }
+
+        canvas {
+            display: block;
+            position: fixed;
+            /* Ekran skroll bo'lganda ham o'rnida turadi */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            /* Hammasidan orqada turishi uchun */
+            pointer-events: none;
+        }
+
+        header,
+        .swiper,
+        .box-father,
+        .endof {
+            position: relative;
+            z-index: 1;
+        }
+
+        .apple {
+            color: white;
+            font-size: 32px;
+            font-family: bold;
+        }
+
+        .apple2 {
+            text-decoration: none;
+        }
+
+        .logomain {
+            display: flex;
+        }
+
+        .profile_bar {
+            display: flex;
+            flex-direction: column-reverse;
+            /* flex-direction: row-reverse; */
+        }
+
+        .username {
+            color: white;
+            font-size: 20px;
+            padding-top: 5px;
+            padding-left: 5px;
+        }
+
+        .avatar {
+            width: 65px;
+            height: 60px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, #05f6d6, #3333ff)
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: block;
+            background: #fff;
+        }
+
+        .logbar {
+            display: flex;
+            gap: 10px;
+        }
+
+        .logbtn {
+            text-decoration: none;
+        }
+
+        /* Umumiy stillarni bir joyga yig'ib olamiz */
+        .register,
+        .login {
+            width: 150px;
+            height: 50px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            /* Nozik chegara */
+            backdrop-filter: blur(25px) saturate(150%);
+            -webkit-backdrop-filter: blur(25px) saturate(150%);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+
+            /* Animatsiya asosi */
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Register tugmasi uchun (To'qroq kulrang) */
+        .register {
+            background-color: rgba(142, 142, 147, 0.3);
+        }
+
+        /* Login tugmasi uchun (Oqishroq kulrang) */
+        .login {
+            background-color: rgba(179, 179, 179, 0.4);
+        }
+
+        /* Hover (Sichqoncha ustiga kelganda) animatsiyasi */
+        .register:hover,
+        .login:hover {
+            transform: translateY(-3px);
+            /* Yuqoriga ko'tarilish */
+            background-color: rgba(255, 255, 255, 0.25);
+            /* Yorqinlashish */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            /* Soya orqali hajm berish */
+            border-color: rgba(255, 255, 255, 0.4);
+            /* Chegarani yoritish */
+        }
+
+        /* Active (Bosilganda) animatsiyasi */
+        .register:active,
+        .login:active {
+            transform: scale(0.94);
+            /* Kichrayish (bosish effekti) */
+            transition: all 0.1s ease;
+            /* Tezkor javob */
+        }
+    </style>
+
+</head>
+
+<body>
+    <canvas id="snowCanvas"></canvas>
+    <!-- <script src="script.js"></script> -->
+    <!-- <button onclick="startSnow()">Qorni Boshlash</button> -->
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-[#1C1C1E] border-b border-[#2C2C2E] backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between gap-4">
+
+                <div class="flex items-start gap-4">
+
+                    <a href="{% url 'main_page' %}">
+                        <div class="logomain">
+                            <a href="#" class="flex-shrink-0">
+
+                                <img class="w-[80px] h-[50px] object-contain rounded-[20px]"
+                                    src="{% static 'images/apple_logo.svg' %}" alt="Apple Logo">
+                            </a>
+
+                            <a class="apple2" href="">
+                                <h2 class="apple">Appleshop</h2>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+
+
+                <!-- Search Bar (Apple Style) -->
+                <div class="flex-grow max-w-xs sm:max-w-md lg:max-w-lg">
+                    <div class="flex items-center bg-[#2C2C2E] border border-[#3A3A3C] rounded-2xl px-4 h-10 sm:h-11">
+                        <svg class="w-5 h-5 text-[#8E8E93] mr-2" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+
+                        <input class="flex-grow bg-transparent text-white placeholder-[#8E8E93] outline-none"
+                            type="text" placeholder="Search products...">
+                    </div>
+                </div>
+
+                <!-- Icons -->
+                <div class="flex items-center gap-5">
+
+                    <!-- Cart Icon -->
+                    <!-- <a href="#" class="relative">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5h6m-3-3v3m0 12v4M5 9h14l1 12H4z" />
+                        </svg>
+                        <span
+                            class="absolute -top-2 -right-2 bg-[#0A84FF] text-white text-xs w-4 h-4 flex items-center justify-center rounded-full shadow-md">
+                            8
+                        </span>
+                    </a> -->
+
+
+
+                    {% if user.is_authenticated %}
+
+                    <a class="profile_bar" href="{% url 'info' user.id %}">
+                        <h3 class="username">{{ user.username }}</h3>
+                        <div class="avatar">
+                            <img class="avatar" src="{%static 'images/image.png'%}" alt="Profile">
+                        </div>
+                    </a>
+
+                    {% else %}
+                    <div class="logbar">
+                        <a class="logbtn" href="{% url 'register' %}"><button class="register">Register</button></a>
+                        <a class="logbtn" href="{% url 'login' %}"><button class="login">Login</button></a>
+                    </div>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+    <!-- SWIPER -->
+    <div class="swiper mt-5">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img width="1440px" alt="Banner 1"
+                    src="https://techcrunch.com/wp-content/uploads/2022/08/apple-event-2022-09-splash.jpg">
+            </div>
+
+            <div class="swiper-slide"><img width="1440px" alt="Banner 2"
+                    src="https://techtoro.io/image/cache/catalog/Blogs/apple-events-2025/apple-events-2025-1920x1080.png">
+            </div>
+
+            <div class="swiper-slide"><img width="1440px" alt="Banner 3"
+                    src="https://img.jabko.ua/image/cache//catalog/products/2023/06/241706/A17-Feature-Darkfull.jpeg.webp">
+            </div>
+            <div class="swiper-slide"><img width="1440px" alt="Banner 4"
+                    src="https://counterpointresearch.com/statics/images/admin/thumbnailFile_1727400461_0.jpg">
+            </div>
+            <div class="swiper-slide"><img width="1440px" alt="Banner 5"
+                    src="https://techcrunch.com/wp-content/uploads/2021/09/apple-fall-event-2021-splash.jpg">
+            </div>
+            <div class="swiper-slide"><img width="1440px" alt="Banner 6"
+                    src="https://www.cnet.com/a/img/resize/8a6081d2767ce9f05f7345e93659c427a03e241c/hub/2023/09/12/9c3f8c64-9006-4265-908c-8ccae813a98a/screenshot-2023-09-12-at-10-26-58-am.png?auto=webp&fit=crop&height=675&precrop=1282,637,x0,y80&width=1200">
+            </div>
+            <div class="swiper-slide"><img width="1440px" alt="Banner 6"
+                    src="https://cdn.ain.ua/en/articles/2025-01-23/Zk3ZmlIbDFEVGHEZuuaaQ5oWtTkeMul0d3Q80Vld.webp">
+            </div>
+            <div class="swiper-slide"><img width="1440px" alt="Banner 6"
+                    src="https://www.gsmmaniak.pl/wp-content/uploads/gsmmaniak/2025/10/samsung-galaxy-s26-ultra-1-scaled.jpeg">
+            </div>
+            <div class="swiper-slide"><img width="1440px" alt="Banner 6"
+                    src="https://cdn.mediablog.mediapark.uz/corecms/post-images/01K63FGX1Z9BJZHQER5J64CGJA.webp">
+            </div>
+            <div class="swiper-slide"><img width="1440px" alt="Banner 6"
+                    src="https://soyacincau.com/wp-content/uploads/2025/09/250916-xiaomi-17-pro-01.jpg">
+            </div>
+        </div>
+
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+
+
+    <!-- PRODUCTS -->
+    <div class="box-father">
+        {% for i in products %}
+        {% if i.is_active %}
+        <a href="{% url 'product' i.pk %}">
+            <div class="box">
+                <img src="{{ i.image.url }}" alt="{{ i.name }}">
+                {% if i.is_new %}
+                <span class="badge badge-new">NEW</span>
+                {% endif %}
+                <h3 class="name">{{ i.brend }}</h3>
+                <h3 class="name">{{ i.name }}</h3>
+                <h2 class="desc">{{ i.about|slice:'30' }}...</h2>
+                {% if i.count %}
+                <h4 class="count">{{ i.count }} ta qoldi</h4>
+                {% else %}
+                <h4 style="color: red;">Afsuski qolmadi 😔</h4>
+                {% endif %}
+                {% if i.sale %}
+                <div class="price-box">
+                    <span class="badge badge-sale">SALE {{i.sale}}%</span>
+                    <div class="prices">
+                        <span class="old-price"
+                            style="text-decoration: line-through; color: #ff3d00; font-size: 0.85rem;">{{i.price }}
+                            UZS</span>
+                        <span class="sale-price" style="color: #4caf50; font-size: 1rem;">{{ i.sale_seller }} UZS</span>
+                    </div>
+                </div>
+                {% else %}
+                <span class="price">{{i.price}} UZS</span>
+                {% endif %}
+                <button class="cart-btn">Add to cart 🛒</button>
+            </div>
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <br><br>
+    <div class="endof">
+        <h3 class="end">Siz hamma mahsulotlarni ko'rib bo'ldingiz 😔</h3>
+    </div>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script>
+        new Swiper('.swiper', {
+            slidesPerView: 1.5,
+            centeredSlides: true,
+            loop: true,
+            spaceBetween: 30,
+            autoplay: { delay: 3000 },
+        });
+        const canvas = document.getElementById('snowCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height, snowflakes = [];
+
+        // Ekranni o'lchamini sozlash
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Qor parchasi klassi
+        class Snowflake {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height * -1; // Ekran tepasidan tashqarida boshlanadi
+                this.size = Math.random() * 3 + 1;    // 1px dan 4px gacha hajm
+                this.speed = Math.random() * 1 + 0.5; // Tushish tezligi
+                this.velX = Math.random() * 0.5 - 0.25; // Shamol effekti (yon tomonga)
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
+
+            update() {
+                this.y += this.speed;
+                this.x += this.velX;
+
+                // Agar qor pastga tushib ketsa, yana tepaga qaytarish
+                if (this.y > height) {
+                    this.reset();
+                    this.y = -10;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        // 200 ta qor parchasi yaratish
+        function init() {
+            for (let i = 0; i < 200; i++) {
+                snowflakes.push(new Snowflake());
+            }
+        }
+
+        // Animatsiya sikli
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            snowflakes.forEach(flake => {
+                flake.update();
+                flake.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    </script>
+
+</body>
+
+</html>
