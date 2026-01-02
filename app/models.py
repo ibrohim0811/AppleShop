@@ -36,6 +36,13 @@ class Products(models.Model):
         ordering = ['-created_at']
         
 # image = models.ImageField(upload_to='products/')
+
+class ProductImage(models.Model):
+    image = models.ImageField(upload_to='products/')
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='products')
+    
+    def __str__(self):
+        return self.product.name
         
 class Users(AbstractUser):
     about = models.TextField(blank=True, null=True)
