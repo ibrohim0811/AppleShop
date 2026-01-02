@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detailst</title>
+    <style>
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: #1C1C1E;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.product-detail-page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Top section: flex layout */
+.top-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 40px;
+    justify-content: center;
+    align-items: flex-start;
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(12px);
+}
+
+/* Left image */
+.product-image {
+    flex: 1 1 45%;
+    min-width: 300px;
+    max-width: 600px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    border-radius: 20px;
+}
+
+.product-image img {
+    max-width: 90%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 16px;
+}
+
+/* Badges */
+.badge {
+    position: absolute;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 12px;
+    color: #fff;
+}
+
+.badge-new {
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(135deg, #0A84FF, #5AC8FA);
+    animation: pulse 1.2s infinite ease-in-out;
+}
+
+.badge-sale {
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #FF453A, #FF6B5A);
+    animation: glowPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0%,100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.85; }
+}
+
+@keyframes glowPulse {
+    0%,100% { box-shadow: 0 8px 24px rgba(255,69,58,0.35); transform: scale(1); }
+    50% { box-shadow: 0 16px 40px rgba(255,69,58,0.7); transform: scale(1.1); }
+}
+
+/* Right info */
+.product-info {
+    flex: 1 1 45%;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Top actions (button at the top) */
+.top-actions {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.product-name {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.product-brand {
+    font-size: 1rem;
+    color: #b3b3b3;
+}
+
+.product-type, .product-about {
+    font-size: 0.95rem;
+    color: #b3b3b3;
+}
+
+/* Price box */
+.price-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #ff3d00;
+    font-size: 0.9rem;
+}
+
+.sale-price {
+    color: #4caf50;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.price {
+    color: lightseagreen;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+/* Actions (other info) */
+.actions {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.cart-btn {
+    padding: 14px 24px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, #0A84FF, #5AC8FA);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.cart-btn:active {
+    transform: scale(0.97);
+}
+
+.count {
+    font-size: 0.9rem;
+    color: #32d74b;
+    font-weight: 600;
+}
+
+/* Bottom section */
+.bottom-section {
+    padding: 40px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+}
+
+.bottom-section h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.bottom-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.bottom-section li {
+    padding: 6px 0;
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.main_btn{
+    text-decoration: none;
+}
+.btn{
+    margin-left: 20px;
+    width: 110px;
+    height: 50px;
+    border-radius: 20px;
+    color: white;
+    background: linear-gradient(135deg, #0A84FF, white);
+    cursor: pointer;
+    border: none;
+}
+    </style>
+</head>
+
+<body>
+<a class="main_btn" href="{% url 'main_page' %}"><button class="btn"> ⬅️ Ortga</button></a>
+<div class="product-detail-page">
+
+    <!-- Top section -->
+    <div class="top-section">
+        <!-- Left: Product Image -->
+        <div class="product-image">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% if product.is_new %}
+                <span class="badge badge-new">NEW</span>
+            {% endif %}
+            {% if product.sale > 0 %}
+                <span class="badge badge-sale">SALE</span>
+            {% endif %}
+        </div>
+
+        <!-- Right: Product Info -->
+        <div class="product-info">
+            <!-- Top: Add to Cart button -->
+            <div class="top-actions">
+                <button class="cart-btn">Add to Cart 🛒</button>
+            </div>
+
+            <h1 class="product-name">{{ product.name }}</h1>
+            <h3 class="product-brand">{{ product.brend }}</h3>
+            <p class="product-type">{{ product.p_type }}</p>
+            <p class="product-about">{{ product.about }}</p>
+
+            <div class="price-box">
+                {% if product.sale > 0 %}
+                    <span class="old-price">{{ product.price }} UZS</span>
+                    <span class="sale-price">{{ product.sale_seller }} UZS</span>
+                {% else %}
+                    <span class="price">{{ product.price }} UZS</span>
+                {% endif %}
+            </div>
+
+            <div class="actions">
+                <span class="count">{{ product.count }} ta qoldi</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom section: Additional Info -->
+    <div class="bottom-section">
+        <h2>Product Details</h2>
+        {% if product.info %}
+            <ul>
+            {% for key, value in product.info.items %}
+                <li><strong>{{ key }}:</strong> {{ value }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>Qo‘shimcha ma’lumot mavjud emas.</p>
+        {% endif %}
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Style Register</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            /* Orqa fonga qora rangli rasm qo'yishingiz uchun tayyorlandi */
+            background: url('https://images.pexels.com/photos/2098428/pexels-photo-2098428.jpeg?cs=srgb&dl=pexels-eberhardgross-2098428.jpg&fm=jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glass-box {
+            width: 90%;
+            max-width: 450px;
+            padding: 40px;
+            /* Shaffoflik va xiralashtirish effekti */
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            margin-left: 5px;
+            font-size: 14px;
+            color: white;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 16px;
+            font-family: bold;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        textarea:focus {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #000;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(0.98);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .notification-box {
+            /* O'lchamlar va shakl */
+            width: 400px;
+            height: 70px;
+            border-radius: 20px;
+
+            /* Pozitsiya - tepada o'rtada */
+            position: fixed;
+            top: -100px;
+            /* Boshida ekrandan tepada ko'rinmay turadi */
+            left: 50%;
+            transform: translateX(-50%);
+
+            /* Dizayn */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: sans-serif;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: top 0.5s ease;
+            /* Pastga tushish effekti */
+        }
+
+        .success-bg {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .error-bg {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* Box ko'ringanda ishlatiladigan klass */
+        .show {
+            top: 20px;
+            /* Tepadan 20px pastga tushadi */
+        }
+        a{
+            text-decoration: none;
+            color: darkgrey;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% if holat %}
+        <div id="msg-box" class="notification-box {% if holat == 'success' %}success-bg{% else %}error-bg{% endif %}">
+            <div class="content">
+                {% if holat == 'success' %}
+                ✅ Muvaffaqiyatli ro'yxatdan o'tdingiz!
+                {% else %}
+                ❌ Username band, boshqa nom kiring!
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+    <div class="glass-box">
+        <h2>Ro'yxatdan o'tish</h2>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="first_name">Ism</label>
+                <input type="text" id="first_name" name="first_name" placeholder="Ismingizni kiriting" required>
+            </div>
+
+            <div class="input-group">
+                <label for="last_name">Familiya</label>
+                <input type="text" id="last_name" name="last_name" placeholder="Familiyangizni kiriting" required>
+            </div>
+
+            <div class="input-group">
+                <label for="username">Foydalanuvchi nomi</label>
+                <input type="text" id="username" name="username" placeholder="@username" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Parol</label>
+                <input type="text" id="password" name="password" placeholder="Parol" required>
+            </div>
+
+            <div class="input-group">
+                <label for="about">O'zingiz haqingizda</label>
+                <textarea id="about" name="about" placeholder="Qisqacha ma'lumot..."></textarea>
+            </div>
+            <a href="{% url 'login' %}">Login</a>
+            <button type="submit">Davom etish</button>
+        </form>
+    </div>
+    <script>
+    // Sahifa yuklanganda boxni pastga tushirish
+    window.onload = function() {
+        var msgBox = document.getElementById('msg-box');
+        if (msgBox) {
+            // 100ms dan keyin pastga tushadi (chiroyli chiqishi uchun)
+            setTimeout(function() {
+                msgBox.classList.add('show');
+            }, 100);
+
+            // 4 soniyadan keyin qaytib tepaga chiqib ketadi
+            setTimeout(function() {
+                msgBox.classList.remove('show');
+            }, 4000);
+        }
+    };
+</script>
+
+</body>
+
+</html>

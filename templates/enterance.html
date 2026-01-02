@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Apple Style Landing</title>
+    <style>
+        /* USER cursorni bloklash */
+        body {
+            background-color: black;
+            cursor: none;
+            pointer-events: none;
+            overflow: hidden;
+            /* user interaction OFF */
+        }
+
+        /* body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.25);
+        } */
+
+        /* Fake cursor */
+        #fake-cursor {
+            position: fixed;
+            width: 18px;
+            height: 18px;
+            border: 2px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        /* Taskbar */
+        #taskbar {
+            position: fixed;
+            bottom: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 80px;
+            width: 420px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(18px);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: bottom 1s ease;
+        }
+
+        /* App icon */
+        .app-icon {
+            width: 60px;
+            height: 60px;
+            background: black;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .app-icon img {
+            width: 38px;
+            filter: invert(1);
+        }
+/*  */
+    </style>
+
+</head>
+
+<body>
+
+    <div id="fake-cursor"></div>
+
+    <div id="taskbar">
+        <div class="app-icon" id="apple">
+            <img src="https://images.seeklogo.com/logo-png/15/2/apple-logo-png_seeklogo-158010.png">
+        </div>
+    </div>
+
+    <!-- <div id="launch">
+        <div class="launch-content">
+            <img src="https://images.seeklogo.com/logo-png/15/2/apple-logo-png_seeklogo-158010.png" class="launch-logo">
+            <h1 class="launch-text">Apple Store</h1>
+        </div>
+    </div> -->
+
+
+    <script>
+const fakeCursor = document.getElementById('fake-cursor');
+const taskbar = document.getElementById('taskbar');
+const apple = document.getElementById('apple');
+// const launch = document.getElementById('launch');
+
+// boshlang‘ich cursor pozitsiyasi
+let x = window.innerWidth / 2;
+let y = window.innerHeight / 2;
+fakeCursor.style.left = x + 'px';
+fakeCursor.style.top = y + 'px';
+
+// taskbar chiqishi
+setTimeout(() => {
+    taskbar.style.bottom = '25px';
+}, 600);
+
+// fake cursor icon tomonga yuradi
+setTimeout(() => {
+    const rect = apple.getBoundingClientRect();
+    const targetX = rect.left + rect.width / 2;
+    const targetY = rect.top + rect.height / 2 - 5;
+
+    const move = setInterval(() => {
+        x += (targetX - x) * 0.12;
+        y += (targetY - y) * 0.12;
+        fakeCursor.style.left = x + 'px';
+        fakeCursor.style.top = y + 'px';
+
+        if (Math.abs(x - targetX) < 2 && Math.abs(y - targetY) < 2) {
+            clearInterval(move);
+
+            // hover effect
+            apple.style.transform = 'translateY(-14px) scale(1.1)';
+
+            // "CLICK" PAUSE (insoniy his)
+            setTimeout(() => {
+
+                // 🔥 LAUNCH SHU YERDA BOSHLANADI
+                
+
+                // redirect animatsiyadan keyin
+                setTimeout(() => {
+                    window.location.href = "{% url 'main_page' %}";
+                }, 1000);
+
+            }, 350);
+        }
+    }, 16);
+}, 1300);
+
+    </script>
+
+
+</body>
+
+</html>
