@@ -1,3 +1,4 @@
+import requests
 from django.shortcuts import render, redirect
 from .models import Products
 from django.utils import timezone
@@ -9,23 +10,38 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout
 
 from .models import Users
-from .forms import UserRegisterForm, UserLoginForm
+from .forms import UserRegisterForm, UserLoginForm, SearchForm
 from .mixin import NotLoginRequiredMixin
 
-class ProductListView(ListView):
+class ProductView(ListView):
     queryset = Products.objects.all()
     context_object_name = 'products'
     template_name = 'index.html'
+    @property
+    def is_new(self):
+        return timezone.now() - self.created_at <= timedelta(days=1)
+    
+    
+    
     def get_queryset(self):
-        queryset = super().get_queryset()
-        now = timezone.now()
         
-        for p in queryset:
-            
-            p.is_new = (now - p.created_at <= timedelta(days=1))
-        
-        return queryset   
- 
+        data = super().get_queryset()
+        search = self.request.GET.get('search')
+        if search is None:
+            products = Products.objects.all()
+            return products 
+        else:
+            data = Products.objects.filter(name__icontains=search)
+            return data
+    
+
+from django.shortcuts import render
+
+def custom_403(request, exception):
+    return render(request, "errors/403.html", status=403)
+    
+def custom_404(request, exception):
+    return render(request, "errors/404.html", status=404)
     
 class ProductDetailView(DetailView):
     model = Products
@@ -63,6 +79,50 @@ class UserInfoDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'user'
     pk_url_kwarg = 'id'
 
+class ProfileSettings(LoginRequiredMixin, View):
+    template_name = 'profile_settings.html'
+    
+    def get(self, request):
+        profile = request.user  
+        return render(request, self.template_name, {'profile': profile})
+    
+    def post(self, request):
+        profile = request.user  
+        image = request.FILES.get('profile_image')
+        if image:
+            profile.image = image
+            profile.save()
+        return redirect('/')
+
+
+class SupportView(View):
+    template_name = 'support.html'
+    def get(self, request):
+        return render(request, self.template_name)
+    def post(self, request):
+        username = request.POST.get("username")
+        about = request.POST.get("about")
+        from dotenv import load_dotenv
+        import os
+        load_dotenv()
+        BOT_TOKEN = os.getenv('BOT_TOKEN')
+        CHAT_ID = os.getenv('CHAT_ID')
+
+        text = f"👤 {username}\n📝 {about}"
+
+        
+        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+        data={
+            "chat_id": CHAT_ID,
+            "text": text
+        }
+    
+        requests.post(url=url, data=data)
+
+        return redirect("/")
+
+class CartTemplateView(TemplateView):
+    template_name = 'cart.html'
 
 def user_out(request):
     logout(request)  

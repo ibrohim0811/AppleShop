@@ -1,187 +1,156 @@
-{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 
 <head>
     <meta charset="UTF-8">
-    <title>User Info</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Profile</title>
     <style>
-        /* Boshqalar uchun */
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
             background-color: black;
-            background-size: cover;
             display: flex;
-            justify-content: center;
+            /* Menyuni chapda, dekoratsiyani o'ngda saqlaydi */
+            justify-content: space-between;
             align-items: center;
             height: 100vh;
-        }
-
-        .container {
-            display: flex;
-            width: 90%;
-            height: 90%;
-            gap: 20px;
-        }
-
-        /* Chap tomon - avatar */
-        .left-panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .avatar-box {
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .avatar-box img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            object-fit: cover;
-        }
-
-        .avatar-box input[type="file"] {
-            padding: 8px 12px;
-            border-radius: 12px;
-            border: none;
-            background: rgba(255, 255, 255, 0.3);
-            color: #fff;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* O‘ng tomon - user info */
-        .right-panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .user-info {
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .user-info div {
-            font-size: 18px;
-            font-weight: 600;
-            color: #fff;
-        }
-
-        .logout-box {
-            margin-top: auto;
-            padding: 20px;
-            /* Shaffoflik darajasi biroz kamaytirildi, blur kuchaytirildi */
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            background: rgba(255, 255, 255, 0.05);
-            /* Juda nozik oqish tus */
-
-            /* Nozik chegara (border) effektli oyna beradi */
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 24px;
-            text-align: center;
-
-            /* Soyani yumshatish */
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease;
-        }
-
-        .logout-box:hover {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .logout-box a {
-            display: block;
-            /* Yoki flex */
-            width: 100%;
+            margin: 0;
             box-sizing: border-box;
-            padding: 12px 25px;
+            font-family: 'Segoe UI', sans-serif;
+            padding-left: 80px; /* Chapdan masofa */
+            padding-right: 40px; /* O'ngdan biroz joy */
+            overflow: hidden;
+        }
+
+        /* Orqaga tugmasi */
+        .bck { position: absolute; top: 20px; left: 20px; }
+        .back {
+            width: 130px; height: 40px; border-radius: 12px;
+            cursor: pointer; background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2); color: white;
+            transition: 0.3s;
+        }
+
+        /* Chap tomondagi menyu */
+        .btn-father {
+            display: flex; flex-direction: column; gap: 18px;
+            z-index: 10;
+        }
+        .settings, .logout {
+            width: 320px; height: 65px; border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1); color: white;
+            font-size: 19px; cursor: pointer; transition: 0.3s;
+            text-align: left; padding-left: 25px;
+        }
+        .settings { background: rgba(255, 255, 255, 0.05); }
+        .logout { background: #933838; text-align: center; padding-left: 0; }
+        .settings:hover { transform: translateX(15px); background: rgba(255, 255, 255, 0.15); }
+
+        /* O'NG TOMON: KATTALASHTIRILGAN VA O'NGGA SURILGAN KOMPOZITSIYA */
+        .promo-wrapper {
+            position: relative;
+            width: 700px; /* Maydonni kengaytirdik */
+            height: 600px;
+            display: flex;
+            justify-content: flex-end; /* Elementlarni wrapperning o'ngiga suradi */
             align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: 500;
-            letter-spacing: -0.3px;
-            border-radius: 16px;
-
-
-            background: rgba(255, 59, 48, 0.15);
-
-            color: #ff453a;
-
-
-            text-decoration: none;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .logout-box a:hover {
-            background: #ff3b30;
-
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(255, 59, 48, 0.3);
+        .promo-card {
+            position: absolute;
+            width: 300px; /* Hajmi kattalashtirildi */
+            padding: 35px; /* Ichki bo'shliq ko'paytirildi */
+            border-radius: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+            transition: 0.5s;
         }
 
-        .logout-box a:active {
-            transform: scale(0.97);
-
+        /* Kartalarni o'ngroqqa va o'zaro joylashtirish */
+        .top-card {
+            top: 20px;
+            right: 180px; /* Markaziyroq lekin o'ngda */
+            background: linear-gradient(135deg, rgba(255, 126, 95, 0.4), rgba(254, 180, 123, 0.2));
+            animation: floatUp 4s ease-in-out infinite;
         }
+
+        .left-card {
+            bottom: 50px;
+            right: 350px; /* Chaproqqa, lekin umumiy o'ng blokda */
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.4), rgba(198, 40, 40, 0.3));
+            animation: floatLeft 5.5s ease-in-out infinite;
+        }
+
+        .right-card {
+            bottom: 50px;
+            right: 20px; /* Eng o'ngda */
+            background: linear-gradient(135deg, rgba(21, 101, 192, 0.4), rgba(106, 27, 154, 0.3));
+            animation: floatRight 4.5s ease-in-out infinite;
+        }
+
+        /* ANIMATSIYALAR - kuchaytirilgan */
+        @keyframes floatUp {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-25px); }
+        }
+
+        @keyframes floatLeft {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-15px, 20px) rotate(-2deg); }
+        }
+
+        @keyframes floatRight {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(15px, -15px) rotate(2deg); }
+        }
+
+        .promo-card h2 { margin: 15px 0; font-size: 26px; font-weight: bold; }
+        .promo-card p { font-size: 16px; opacity: 0.8; }
+        .promo-card span { font-size: 55px; display: block; margin-top: 15px; }
+        
+        a { text-decoration: none; }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <!-- Chap panel -->
-        <div class="left-panel">
-            <form class="avatar-box" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {% if user.profile_photo %}
-                <img src="{{ user.image.url }}" alt="Profile Photo" width="150">
-                {% else %}
-                <img src="{% static 'images/image.png' %}" alt="Default Profile" width="150">
-                {% endif %}
 
-                <input type="file" name="profile_photo" accept="image/*">
-                <button type="submit">Change Image</button>
-            </form>
-        </div>
-
-        <!-- O‘ng panel -->
-        <div class="right-panel">
-            <div class="user-info">
-                <div>Username: {{ user.username }}</div>
-            </div>
-
-            <div class="logout-box">
-                <a href="{% url 'logout' %}">Log Out</a>
-            </div>
-
-        </div>
+    <div class="bck">
+        <a href="{% url 'main_page' %}"><button class="back">⬅️ Orqaga</button></a>
     </div>
+
+    <div class="btn-father">
+        <a href="{% url 'profile_settings' %}"><button class="settings">Profile Settings 👤</button></a>
+        <a href="#"><button class="settings">Orders 📦</button></a>
+        <a href="{% url 'cart' %}"><button class="settings">Cart 🛒</button></a>
+        <a href="#"><button class="settings">Settings ⚙️</button></a>
+        <a href="{% url 'support' %}"><button class="settings">Support 📞</button></a>
+        <a href="{% url 'logout' %}"><button class="logout"> Logout </button></a>
+    </div>
+
+    <div class="promo-wrapper">
+        
+        <div class="promo-card top-card">
+            <p>Eksklyuziv</p>
+            <h2>-50% OFF</h2>
+            <span>⚡</span>
+        </div>
+
+        <div class="promo-card left-card">
+            <p>Mavsumiy</p>
+            <h2>Yangi Yil</h2>
+            <span>🎄</span>
+        </div>
+
+        <div class="promo-card right-card">
+            <p>Premium</p>
+            <h2>New Goods</h2>
+            <span>🚀</span>
+        </div>
+
+    </div>
+
 </body>
 
 </html>

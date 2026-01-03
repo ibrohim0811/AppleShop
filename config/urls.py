@@ -20,8 +20,9 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from app.views import (
-    ProductListView, ProductDetailView, UserInfoDetailView, 
-    UserRegisterView, EnteranceTemplateView, UserLoginView, 
+    ProductView, ProductDetailView, UserInfoDetailView, 
+    UserRegisterView, EnteranceTemplateView, UserLoginView,
+    ProfileSettings, SupportView, CartTemplateView,
     user_out
     )
 
@@ -33,8 +34,14 @@ urlpatterns = [
     path("login/", UserLoginView.as_view(), name='login'),
     path("profile/<int:id>", UserInfoDetailView.as_view(), name='info'),
     path("logout/", user_out, name='logout'),
-    path("main/", ProductListView.as_view(), name='main_page')
+    path("main/", ProductView.as_view(), name='main_page'),
+    path("profile_settings/", ProfileSettings.as_view(), name='profile_settings'),
+    path("support/", SupportView.as_view(), name='support'),
+    path("mycart/", CartTemplateView.as_view(), name='cart')
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+handler403 = "app.views.custom_403"
+handler404 = "app.views.custom_404"

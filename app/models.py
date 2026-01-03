@@ -33,16 +33,16 @@ class Products(models.Model):
         return int(self.price - (self.price * self.sale / 100))
     
     class Meta:
-        ordering = ['-created_at']
-        
-# image = models.ImageField(upload_to='products/')
+        ordering = ['-created_at']        
+
 
 class ProductImage(models.Model):
     image = models.ImageField(upload_to='products/')
-    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='products')
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='images')
     
     def __str__(self):
         return self.product.name
+        
         
 class Users(AbstractUser):
     about = models.TextField(blank=True, null=True)

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Page - iOS 26 Style</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            /* Chiroyli gradientli orqa fon */
+            background: linear-gradient(135deg, #002b59 50%, #2c2c2c 50%);
+            background-image: url('https://wallpapercave.com/wp/wp14582973.jpg');
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Glassmorphism effekti */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.25);
+            /* Biroq shaffofroq */
+            backdrop-filter: blur(25px) saturate(180%);
+            /* Ranglar yorqinroq bo'ladi */
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 35px;
+            /* Yumshoqroq burchaklar */
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            /* Juda mayin soya */
+            width: 380px;
+            padding: 40px;
+        }
+
+        h2 {
+            color: #1d1d1f;
+            margin-bottom: 30px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 15px;
+            border: none;
+            background: rgba(255, 255, 255, 0.5);
+            outline: none;
+            font-size: 16px;
+            color: #1d1d1f;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border-radius: 15px;
+            border: none;
+            background: #007aff;
+            /* iOS Blue */
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:active {
+            transform: scale(0.97);
+            background: #0063cc;
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            font-size: 12px;
+            color: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="glass-card">
+        <h2>Savol va Takliflar</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <input name="username" type="text" placeholder="telegram-username" required>
+            </div>
+            <div class="input-group">
+                <input name="about" type="text" placeholder="Savol-takliflar" required>
+            </div>
+            <button type="submit">Yuborish</button>
+        </form>
+        <p class="footer-text">Sizga tez orada javob beramiz.</p>
+    </div>
+
+</body>
+
+</html>
