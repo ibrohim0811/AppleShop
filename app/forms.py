@@ -16,3 +16,7 @@ class UserRegisterForm(ModelForm):
 class UserLoginForm(Form):
     username = CharField(max_length=100)
     password = CharField(widget=PasswordInput)
+    
+
+class SearchForm(Form):
+    search = CharField(max_length=100, required=False)

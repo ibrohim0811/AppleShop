@@ -1,6 +1,6 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 
 <head>
     <meta charset="UTF-8">
@@ -426,6 +426,114 @@
             transition: all 0.1s ease;
             /* Tezkor javob */
         }
+
+        /* umumiy */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* wrapper */
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            background: rgba(57, 54, 54, 0.9);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 10px 14px;
+            width: 550px;
+            margin-left: -25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: box-shadow 0.3s ease, transform 0.2s ease;
+        }
+
+        .search-wrapper:hover {
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12);
+            transform: translateY(-1px);
+        }
+
+        /* icon */
+        .search-icon {
+            font-size: 18px;
+            color: #ffffff;
+            margin-right: 10px;
+        }
+
+        /* input */
+        .search-input {
+
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            color: #ffffff;
+            background: transparent;
+        }
+
+        .search-input::placeholder {
+            color: #a1a1a6;
+        }
+
+        /* button */
+        .btn-search {
+            border: none;
+            outline: none;
+            background: #0071e3;
+            color: white;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        .btn-search:hover {
+            background: #0077ed;
+            transform: scale(1.05);
+        }
+
+        .btn-search:active {
+            transform: scale(0.97);
+        }
+
+        /* Profil blokini vertikal qilish */
+        .avatar {
+            width: 70px;
+            /* Bir oz kichraytirdik, juda katta bo'lib ketmasligi uchun */
+            height: 70px;
+            border-radius: 50%;
+            padding: 2px;
+            background: linear-gradient(45deg, #05f6d6, #3333ff);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #fff;
+        }
+
+        .username-style {
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            max-width: 80px;
+            /* Ism juda uzun bo'lsa qatorga tushishi uchun */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Header balandligini moslash (agar kerak bo'lsa) */
+        header .max-w-7xl {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
     </style>
 
 </head>
@@ -465,8 +573,17 @@
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
 
-                        <input class="flex-grow bg-transparent text-white placeholder-[#8E8E93] outline-none"
-                            type="text" placeholder="Search products...">
+                        <div class="search-container">
+                            <form action="" method="GET" class="search-form">
+                                {% csrf_token %}
+                                <div class="search-wrapper">
+                                    <span class="search-icon">🔍</span>
+                                    <input name="search" class="search-input" type="text"
+                                        placeholder="Mahsulotlarni qidirish...">
+                                    <button type="submit" class="btn-search">Qidirish</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
@@ -489,13 +606,30 @@
 
                     {% if user.is_authenticated %}
 
-                    <a class="profile_bar" href="{% url 'info' user.id %}">
-                        <h3 class="username">{{ user.username }}</h3>
-                        <div class="avatar">
-                            <img class="avatar" src="{%static 'images/image.png'%}" alt="Profile">
-                        </div>
-                    </a>
+                    <div class="flex items-center gap-6"> <a href="{% url 'cart' %}"
+                            class="relative group transition-all duration-300 hover:scale-110">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            <span
+                                class="absolute -top-1 -right-1 bg-[#0A84FF] text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-lg">
+                                3
+                            </span>
+                        </a>
 
+                        <a href="{% url 'info' user.id %}" class="flex flex-col items-center gap-1 group">
+                            <div class="avatar transition-transform duration-300 group-hover:scale-105">
+                                
+                                <img src="{{ user.image.url }}" alt="Profile">
+                                
+                            </div>
+                            <h3
+                                class="username-style text-white text-lg font-bold opacity-90 group-hover:opacity-100 mt-1">
+                                {{ user.username }}
+                            </h3>
+                        </a>
+                    </div>
                     {% else %}
                     <div class="logbar">
                         <a class="logbtn" href="{% url 'register' %}"><button class="register">Register</button></a>
@@ -559,7 +693,7 @@
         {% if i.is_active %}
         <a href="{% url 'product' i.pk %}">
             <div class="box">
-                <img src="{{ i.image.url }}" alt="{{ i.name }}">
+                <img src="{{ i.images.first.image.url }}" alt="{{ i.name }}">
                 {% if i.is_new %}
                 <span class="badge badge-new">NEW</span>
                 {% endif %}
