@@ -1,7 +1,7 @@
 from django.forms import ModelForm, Form
 from django.forms import CharField, PasswordInput
 from django.contrib.auth.hashers import make_password
-from .models import Users
+from .models import Users, Comment
 
 
 class UserRegisterForm(ModelForm):
@@ -20,3 +20,9 @@ class UserLoginForm(Form):
 
 class SearchForm(Form):
     search = CharField(max_length=100, required=False)
+    
+
+class CommentCreateForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text', 'username', 'product']
