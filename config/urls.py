@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 from app.views import (
     ProductView, ProductDetailView, UserInfoDetailView, 
     UserRegisterView, EnteranceTemplateView, UserLoginView,
-    ProfileSettings, SupportView, CartTemplateView,
+    ProfileSettings, SupportView, CartTemplateView, CommentUserCreateView,
     user_out
     )
 
@@ -37,7 +37,8 @@ urlpatterns = [
     path("main/", ProductView.as_view(), name='main_page'),
     path("profile_settings/", ProfileSettings.as_view(), name='profile_settings'),
     path("support/", SupportView.as_view(), name='support'),
-    path("mycart/", CartTemplateView.as_view(), name='cart')
+    path("mycart/", CartTemplateView.as_view(), name='cart'),
+    path("comment_create/", CommentUserCreateView.as_view(), name='comment')
 ]
 
 if settings.DEBUG:

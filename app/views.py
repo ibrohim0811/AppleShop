@@ -1,5 +1,6 @@
 import requests
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from .models import Products
 from django.utils import timezone
 from datetime import timedelta
@@ -9,8 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib.auth import login, logout
 
-from .models import Users
-from .forms import UserRegisterForm, UserLoginForm, SearchForm
+from .models import Users, Comment
+from .forms import UserRegisterForm, UserLoginForm, CommentCreateForm
 from .mixin import NotLoginRequiredMixin
 
 class ProductView(ListView):
@@ -127,3 +128,9 @@ class CartTemplateView(TemplateView):
 def user_out(request):
     logout(request)  
     return redirect('/')
+
+class CommentUserCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentCreateForm
+    success_url = '/'
+    template_name = 'detail.html'
